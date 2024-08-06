@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
   const [showCode, setShowCode] = useState(false);
   const [status, setStatus] = useState('');
   const [notes, setNotes] = useState(`作業の目的と工程:
-1. プロンプトを送信してテトリスゲームのコードを生成する。
+1. プロンプトを送信してコードを生成する。
 2. 生成されたコードを確認し、必要に応じて修正する。
 3. 修正後のコードをGitHubにプッシュする。
 4. GitHub Pagesで結果を確認する。
@@ -39,6 +39,8 @@ project-texo-v2/
 ├── .gitignore
 └── README.md`);
 
+  const iframeRef = useRef(null);
+
   const handleSubmit = async () => {
     if (!window.confirm(notes + '\n\nプロンプトを送信しますか？')) {
       return;
@@ -62,11 +64,16 @@ project-texo-v2/
     try {
       await axios.post('/api/push', { code: response });
       setStatus('Code pushed to GitHub successfully.');
+      iframeRef.current.src = '/public/index.html'; // Update iframe to reflect new code
     } catch (error) {
       console.error('Error pushing code to GitHub:', error);
       setStatus('Error pushing code to GitHub.');
     }
   };
+
+  useEffect(() => {
+    iframeRef.current.src = '/public/index.html';
+  }, []);
 
   return (
     <div className="App">
@@ -92,6 +99,7 @@ project-texo-v2/
         {showCode && <pre>{response}</pre>}
         <div>Status: {status}</div>
       </header>
+      <iframe ref={iframeRef} width="100%" height="600px" title="Program Viewer"></iframe>
     </div>
   );
 }
