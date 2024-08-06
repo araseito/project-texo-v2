@@ -52,7 +52,7 @@ project-texo-v2/
       setStatus('Code generation successful.');
     } catch (error) {
       console.error('Error generating code:', error);
-      setStatus('Error generating code.');
+      setStatus('Error generating code. Please ensure the prompt is detailed and retry.');
     }
   };
 
