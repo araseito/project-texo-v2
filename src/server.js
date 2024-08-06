@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 app.post('/api/generate', async (req, res) => {
   const { prompt } = req.body;
   try {
-    const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
+    const response = await axios.post('https://api.gpt4omini.com/v1/completions', {
+      model: 'gpt-4-mini',
       prompt: prompt,
       max_tokens: 2000,
     }, {
@@ -27,13 +28,22 @@ app.post('/api/generate', async (req, res) => {
 
 app.post('/api/push', (req, res) => {
   const { code } = req.body;
-  exec(`git pull origin main && git add . && git commit -m "Add generated code" && git push https://x-access-token:${process.env.GH_PAT}@github.com/username/repo.git main`, (error, stdout, stderr) => {
-    if (error) {
-      console.error('Error pushing code to GitHub:', error);
-      res.status(500).send('Error pushing code to GitHub.');
+
+  exec('git init && git remote add origin https://x-access-token:${process.env.GH_PAT}@github.com/username/repo.git', (initError) => {
+    if (initError) {
+      console.error('Error initializing repository:', initError);
+      res.status(500).send('Error initializing repository.');
       return;
     }
-    res.send('Code pushed to GitHub successfully.');
+
+    exec('git pull origin main && git add . && git commit -m "Add generated code" && git push -u origin main', (pushError, stdout, stderr) => {
+      if (pushError) {
+        console.error('Error pushing code to GitHub:', pushError);
+        res.status(500).send('Error pushing code to GitHub.');
+        return;
+      }
+      res.send('Code pushed to GitHub successfully.');
+    });
   });
 });
 
