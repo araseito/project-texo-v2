@@ -22,7 +22,7 @@ jobs:
     - name: Configure npm for GitHub Packages
       run: |
         echo "registry=https://registry.npmjs.org/" > ~/.npmrc
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> ~/.npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" >> ~/.npmrc
 
     - name: Install dependencies
       run: npm install
@@ -31,10 +31,12 @@ jobs:
       run: npm run build
 
     - name: Deploy to GitHub Pages
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
         touch public/.nojekyll
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
         git add public
         git commit -m 'deploy' || echo "No changes to commit"
-        git push https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }} `git subtree split --prefix public main`:refs/heads/gh-pages --force
+        git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} `git subtree split --prefix public main`:refs/heads/gh-pages --force
