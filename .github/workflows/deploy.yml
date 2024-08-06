@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # タイムアウトの設定を少し延長
+    timeout-minutes: 15
 
     steps:
     - name: Checkout repository
@@ -35,6 +35,6 @@ jobs:
         touch public/.nojekyll
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
-        git add -A public
+        git add public
         git commit -m 'deploy' || echo "No changes to commit"
-        git push origin `git subtree split --prefix public main`:refs/heads/gh-pages --force
+        git push https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }} `git subtree split --prefix public main`:refs/heads/gh-pages --force
