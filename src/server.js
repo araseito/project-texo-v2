@@ -22,7 +22,7 @@ app.post('/api/generate', async (req, res) => {
     res.send(response.data.choices[0].text);
   } catch (error) {
     console.error('Error generating code:', error);
-    res.status(500).send('Error generating code.');
+    res.status(500).send('Error generating code. Please ensure the prompt is detailed and retry.');
   }
 });
 
