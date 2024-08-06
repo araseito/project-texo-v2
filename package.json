@@ -5,7 +5,7 @@
   "main": "src/consolidatedApp.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d public"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -19,13 +19,5 @@
     "@babel/preset-react": "^7.12.10"
   },
   "author": "Your Name",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/<your-username>/<your-repo>"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  }
+  "license": "ISC"
 }
-
