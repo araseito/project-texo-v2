@@ -52,7 +52,20 @@ project-texo-v2/
       setStatus('Code generation successful.');
     } catch (error) {
       console.error('Error generating code:', error);
+      await logError(error, prompt);
       setStatus(`Error generating code: ${error.response ? error.response.data : error.message}`);
+      // リトライ
+      if (error.response && error.response.status !== 429) {
+        setStatus('Retrying code generation...');
+        try {
+          const result = await axios.post('/api/generate', { prompt });
+          setResponse(result.data);
+          setStatus('Code generation successful.');
+        } catch (retryError) {
+          console.error('Retry error:', retryError);
+          setStatus(`Retry error: ${retryError.response ? retryError.response.data : retryError.message}`);
+        }
+      }
     }
   };
 
@@ -67,7 +80,28 @@ project-texo-v2/
       iframeRef.current.src = '/public/index.html'; // Update iframe to reflect new code
     } catch (error) {
       console.error('Error pushing code to GitHub:', error);
+      await logError(error, response);
       setStatus(`Error pushing code to GitHub: ${error.response ? error.response.data : error.message}`);
+      // リトライ
+      if (error.response && error.response.status !== 429) {
+        setStatus('Retrying code push...');
+        try {
+          await axios.post('/api/push', { code: response });
+          setStatus('Code pushed to GitHub successfully.');
+          iframeRef.current.src = '/public/index.html'; // Update iframe to reflect new code
+        } catch (retryError) {
+          console.error('Retry error:', retryError);
+          setStatus(`Retry error: ${retryError.response ? retryError.response.data : retryError.message}`);
+        }
+      }
+    }
+  };
+
+  const logError = async (error, context) => {
+    try {
+      await axios.post('/api/logError', { error: error.message, context });
+    } catch (logError) {
+      console.error('Error logging error:', logError);
     }
   };
 
