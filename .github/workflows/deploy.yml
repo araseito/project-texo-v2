@@ -40,10 +40,10 @@ jobs:
         run: npm run build
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v1
         with:
           name: github-pages
-          path: public
+          path: ./public
 
   deploy:
     environment:
@@ -54,7 +54,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v1
         with:
           token: ${{ secrets.GH_PAT }}
           artifact_name: github-pages
