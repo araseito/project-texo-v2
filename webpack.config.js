@@ -1,26 +1,26 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/consolidatedApp.js',
+  entry: './src/consolidatedApp.js', // エントリーポイントを指定
   output: {
-    path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'public'), // 出力ディレクトリを指定
+    filename: 'bundle.js', // 出力ファイル名を指定
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
+        test: /\.js$/, // 対象ファイルの拡張子を指定
+        exclude: /node_modules/, // 除外するディレクトリを指定
         use: {
-          loader: 'babel-loader',
+          loader: 'babel-loader', // 使用するローダーを指定
           options: {
-            presets: ['@babel/preset-react'],
+            presets: ['@babel/preset-react'], // Babelのプリセットを指定
           },
         },
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx'], // 解決する拡張子を指定
   },
 };
