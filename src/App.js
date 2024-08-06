@@ -52,7 +52,7 @@ project-texo-v2/
       setStatus('Code generation successful.');
     } catch (error) {
       console.error('Error generating code:', error);
-      setStatus('Error generating code. Please ensure the prompt is detailed and retry.');
+      setStatus(`Error generating code: ${error.response ? error.response.data : error.message}`);
     }
   };
 
@@ -67,7 +67,7 @@ project-texo-v2/
       iframeRef.current.src = '/public/index.html'; // Update iframe to reflect new code
     } catch (error) {
       console.error('Error pushing code to GitHub:', error);
-      setStatus('Error pushing code to GitHub.');
+      setStatus(`Error pushing code to GitHub: ${error.response ? error.response.data : error.message}`);
     }
   };
 
