@@ -1,6 +1,6 @@
 {
   "name": "project-texo-v2",
-  "version": "0.01",  // 初期バージョン番号
+  "version": "0.01",
   "description": "Project Texo V2",
   "main": "src/server.js",
   "scripts": {
