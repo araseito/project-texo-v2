@@ -1,23 +1,27 @@
 {
   "name": "project-texo-v2",
-  "version": "1.0.0",
-  "description": "A web application integrating AI-powered code generation with GitHub repository management.",
-  "main": "src/consolidatedApp.js",
+  "version": "0.01",  // 初期バージョン番号
+  "description": "Project Texo V2",
+  "main": "src/server.js",
   "scripts": {
+    "start": "node src/server.js",
     "build": "webpack --config webpack.config.js",
-    "deploy": "gh-pages -d public"
+    "deploy": "git add . && git commit -m 'deploy' && git push"
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "babel-loader": "^8.2.2",
+    "babel-preset-react": "^6.24.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "webpack": "^5.24.4",
+    "webpack-cli": "^4.5.0"
   },
   "devDependencies": {
-    "webpack": "^5.24.2",
-    "webpack-cli": "^4.5.0",
-    "babel-loader": "^8.2.2",
-    "@babel/preset-react": "^7.12.10"
+    "@babel/core": "^7.13.1",
+    "@babel/preset-env": "^7.13.0",
+    "@babel/preset-react": "^7.12.13"
   },
-  "author": "Your Name",
+  "author": "",
   "license": "ISC"
 }
