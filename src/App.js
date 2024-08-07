@@ -41,29 +41,35 @@ project-texo-v2/
 
   const iframeRef = useRef(null);
 
+  const updateStatus = (message) => {
+    setStatus(prevStatus => prevStatus + '\n' + message);
+  };
+
   const handleSubmit = async () => {
     if (!window.confirm(notes + '\n\nプロンプトを送信しますか？')) {
       return;
     }
-    setStatus('Generating code...');
+    updateStatus('Sending prompt to GPT...');
     try {
       const result = await axios.post('/api/generate', { prompt });
+      updateStatus('Received response from GPT.');
       setResponse(result.data);
-      setStatus('Code generation successful.');
+      updateStatus('Code generation successful.');
     } catch (error) {
       console.error('Error generating code:', error);
       await logError(error, prompt);
-      setStatus(`Error generating code: ${error.response ? error.response.data : error.message}`);
+      updateStatus(`Error generating code: ${error.response ? error.response.data : error.message}`);
       // リトライ
       if (error.response && error.response.status !== 429) {
-        setStatus('Retrying code generation...');
+        updateStatus('Retrying code generation...');
         try {
           const result = await axios.post('/api/generate', { prompt });
+          updateStatus('Received response from GPT.');
           setResponse(result.data);
-          setStatus('Code generation successful.');
+          updateStatus('Code generation successful.');
         } catch (retryError) {
           console.error('Retry error:', retryError);
-          setStatus(`Retry error: ${retryError.response ? retryError.response.data : retryError.message}`);
+          updateStatus(`Retry error: ${retryError.response ? retryError.response.data : retryError.message}`);
         }
       }
     }
@@ -73,25 +79,27 @@ project-texo-v2/
     if (!window.confirm(notes + '\n\nコードをGitHubにプッシュしますか？')) {
       return;
     }
-    setStatus('Pushing code to GitHub...');
+    updateStatus('Pushing code to GitHub...');
     try {
       await axios.post('/api/push', { code: response });
-      setStatus('Code pushed to GitHub successfully.');
+      updateStatus('Code pushed to GitHub successfully.');
       iframeRef.current.src = '/public/index.html'; // Update iframe to reflect new code
+      updateStatus('Deployment successful.');
     } catch (error) {
       console.error('Error pushing code to GitHub:', error);
       await logError(error, response);
-      setStatus(`Error pushing code to GitHub: ${error.response ? error.response.data : error.message}`);
+      updateStatus(`Error pushing code to GitHub: ${error.response ? error.response.data : error.message}`);
       // リトライ
       if (error.response && error.response.status !== 429) {
-        setStatus('Retrying code push...');
+        updateStatus('Retrying code push...');
         try {
           await axios.post('/api/push', { code: response });
-          setStatus('Code pushed to GitHub successfully.');
+          updateStatus('Code pushed to GitHub successfully.');
           iframeRef.current.src = '/public/index.html'; // Update iframe to reflect new code
+          updateStatus('Deployment successful.');
         } catch (retryError) {
           console.error('Retry error:', retryError);
-          setStatus(`Retry error: ${retryError.response ? retryError.response.data : retryError.message}`);
+          updateStatus(`Retry error: ${retryError.response ? retryError.response.data : retryError.message}`);
         }
       }
     }
@@ -100,8 +108,10 @@ project-texo-v2/
   const logError = async (error, context) => {
     try {
       await axios.post('/api/logError', { error: error.message, context });
+      updateStatus('Error logged successfully.');
     } catch (logError) {
       console.error('Error logging error:', logError);
+      updateStatus('Error logging to file.');
     }
   };
 
@@ -133,7 +143,7 @@ project-texo-v2/
           <button onClick={handlePushToGitHub}>Push to GitHub</button>
         </div>
         {showCode && <pre>{response}</pre>}
-        <div>Status: {status}</div>
+        <div>Status:<pre>{status}</pre></div>
       </header>
       <iframe ref={iframeRef} width="100%" height="600px" title="Program Viewer"></iframe>
     </div>
