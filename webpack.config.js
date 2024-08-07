@@ -1,6 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
+require('dotenv').config();
 
 module.exports = {
+  mode: 'development', // 開発モードを設定
   entry: './src/consolidatedApp.js', // エントリーポイントを指定
   output: {
     path: path.resolve(__dirname, 'public'), // 出力ディレクトリを指定
@@ -24,4 +27,9 @@ module.exports = {
     extensions: ['.js', '.jsx'], // 解決する拡張子を指定
   },
   devtool: 'source-map', // 'eval'の代わりに'source-map'を使用
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env)
+    })
+  ]
 };
