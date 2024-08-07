@@ -110,34 +110,4 @@ project-texo-v2/
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Project Texo</h1>
-        <div>
-          <textarea
-            id="notes" // id属性を追加
-            rows="10"
-            cols="50"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
-          <input
-            type="text"
-            id="prompt" // id属性を追加
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Enter your prompt"
-          />
-          <button onClick={handleSubmit}>Send</button>
-          <button onClick={() => setShowCode(!showCode)}>Show Code</button>
-          <button onClick={handlePushToGitHub}>Push to GitHub</button>
-        </div>
-        {showCode && <pre>{response}</pre>}
-        <div>Status: {status}</div>
-      </header>
-      <iframe ref={iframeRef} width="100%" height="600px" title="Program Viewer"></iframe>
-    </div>
-  );
-}
-
-export default App;
+    <div class
