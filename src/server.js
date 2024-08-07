@@ -31,7 +31,7 @@ app.post('/api/generate', async (req, res) => {
 app.post('/api/push', (req, res) => {
   const { code } = req.body;
 
-  exec('git init && git remote add origin https://x-access-token:${process.env.GH_PAT}@github.com/username/repo.git', (initError) => {
+  exec(`git init && git remote add origin https://x-access-token:${process.env.GH_PAT}@github.com/username/repo.git`, (initError) => {
     if (initError) {
       console.error('Error initializing repository:', initError);
       logError(initError, code);
