@@ -23,4 +23,5 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'], // 解決する拡張子を指定
   },
+  devtool: 'source-map', // 'eval'の代わりに'source-map'を使用
 };
