@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import packageJson from '../package.json'; // package.jsonからバージョン番号を読み込む
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -40,6 +41,7 @@ project-texo-v2/
 └── README.md`);
 
   const iframeRef = useRef(null);
+  const version = packageJson.version;
 
   const updateStatus = (message) => {
     setStatus(prevStatus => prevStatus + '\n' + message);
@@ -122,7 +124,7 @@ project-texo-v2/
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Project Texo</h1>
+        <h1>Project Texo Ver. {version}</h1> {/* バージョン番号を表示 */}
         <div>
           <textarea
             id="notes" // id属性を追加
@@ -134,20 +136,3 @@ project-texo-v2/
           <input
             type="text"
             id="prompt" // id属性を追加
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Enter your prompt"
-          />
-          <button onClick={handleSubmit}>Send</button>
-          <button onClick={() => setShowCode(!showCode)}>Show Code</button>
-          <button onClick={handlePushToGitHub}>Push to GitHub</button>
-        </div>
-        {showCode && <pre>{response}</pre>}
-        <div>Status:<pre>{status}</pre></div>
-      </header>
-      <iframe ref={iframeRef} width="100%" height="600px" title="Program Viewer"></iframe>
-    </div>
-  );
-}
-
-export default App;
