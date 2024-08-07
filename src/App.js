@@ -115,6 +115,7 @@ project-texo-v2/
         <h1>Project Texo</h1>
         <div>
           <textarea
+            id="notes" // id属性を追加
             rows="10"
             cols="50"
             value={notes}
@@ -122,6 +123,7 @@ project-texo-v2/
           />
           <input
             type="text"
+            id="prompt" // id属性を追加
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Enter your prompt"
