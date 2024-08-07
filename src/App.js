@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import packageJson from '../package.json'; // package.jsonからバージョン番号を読み込む
+import packageJson from '../package.json';
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -136,3 +136,20 @@ project-texo-v2/
           <input
             type="text"
             id="prompt" // id属性を追加
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Enter your prompt"
+          />
+          <button onClick={handleSubmit}>Send</button>
+          <button onClick={() => setShowCode(!showCode)}>Show Code</button>
+          <button onClick={handlePushToGitHub}>Push to GitHub</button>
+        </div>
+        {showCode && <pre>{response}</pre>}
+        <div>Status:<pre>{status}</pre></div>
+      </header>
+      <iframe ref={iframeRef} width="100%" height="600px" title="Program Viewer"></iframe>
+    </div>
+  );
+}
+
+export default App;
