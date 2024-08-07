@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "build": "webpack --config webpack.config.js",
-    "deploy": "git add . && git commit -m 'deploy' && git push"
+    "update-version": "node update-version.js",
+    "deploy": "npm run update-version && git add . && git commit -m 'deploy' && git push"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -24,10 +25,4 @@
   },
   "author": "",
   "license": "ISC"
-}
-"scripts": {
-  "start": "node src/server.js",
-  "build": "webpack --config webpack.config.js",
-  "update-version": "node update-version.js",
-  "deploy": "npm run update-version && git add . && git commit -m 'deploy' && git push"
 }
